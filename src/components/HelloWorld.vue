@@ -1,58 +1,132 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-app-bar app color="primary" dark>
+    <!-- Navbar toggle button -->
+    <v-app-bar-nav-icon @click="toggleSidebar" />
+
+    <!-- Logo -->
+    <v-img src="/path/to/logo.png" alt="Logo" class="logo"></v-img>
+
+    <v-spacer></v-spacer>
+
+    <!-- Search Bar -->
+    <v-text-field
+      v-model="searchQuery"
+      label="Search"
+      append-icon="mdi-magnify"
+      single-line
+      hide-details
+      class="search-bar"
+    ></v-text-field>
+
+    <v-spacer></v-spacer>
+
+    <!-- Login/Signup Buttons -->
+    <v-btn  to="/login" text class="login-btn" @click="login">Login</v-btn>
+    <v-btn outlined color="white" class="signup-btn" @click="signup">Sign Up</v-btn>
+
+    <!-- Navigation Drawer -->
+    <v-navigation-drawer v-model="sidebarOpen" app permanent>
+      <v-list>
+        <v-list-item v-for="item in sidebarItems" :key="item.title" @click="navigate(item.route)">
+          <!-- <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon> -->
+          <!-- </v-list-item-icon> -->
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+   
+  </v-app-bar>
+  <Carosel></Carosel> 
+  <Categories></Categories>
+  <!-- <Footer></Footer> -->
 </template>
 
 <script>
+
+import Carosel from './Carosel.vue';
+import Footer from './Footer.vue';
+import Categories from './Categories.vue';
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+    data() {
+        return {
+            searchQuery: "",
+            sidebarOpen: false,
+            sidebarItems: [
+                { title: "Home", route: "/home", icon: "mdi-home" },
+                { title: "Contact", route: "/contact", icon: "mdi-phone" },
+                { title: "About", route: "/about", icon: "mdi-information" },
+            ], // Sidebar items
+        };
+    },
+    methods: {
+        toggleSidebar() {
+            this.sidebarOpen = !this.sidebarOpen;
+        },
+        navigate(route) {
+            // Logic for navigating to the specified route
+            this.$router.push(route);
+        },
+        login() {
+            // Logic for login
+        },
+        signup() {
+            // Logic for signup
+        },
+    },
+    components: { Carosel, Categories,Footer }
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.logo {
+  height: 40px;
+  margin-right: 16px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.search-bar {
+  width: 200px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.login-btn {
+  margin-right: 8px;
 }
-a {
-  color: #42b983;
+
+.signup-btn {
+  margin-left: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Mobile responsive styles */
+  .logo {
+    height: 32px;
+    margin-right: 12px;
+  }
+
+  .search-bar {
+    width: 150px;
+  }
+
+  .login-btn,
+  .signup-btn {
+    font-size: 12px;
+    margin: 0;
+  }
+  .carousel-image {
+  height: 400px;
+  object-fit: cover;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 16px;
+}
 }
 </style>
